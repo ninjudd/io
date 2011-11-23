@@ -37,4 +37,12 @@
   (assoc default-streams-impl
     :make-input-stream concat-input-streams))
 
-
+(defn bufseq->bytes [bufs]
+  (let [size (apply + (map #(.remaining ^ByteBuffer %) bufs))
+        dest (byte-array (apply + (map #(.remaining ^ByteBuffer %) bufs)))]
+    (reduce (fn [curr-size ^ByteBuffer b]
+              (let [size (.remaining b)]
+                (.get b dest curr-size size)
+                (+ size curr-size)))
+            0 bufs)
+    dest))

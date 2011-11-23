@@ -1,7 +1,7 @@
 (ns io.core-test
   (:use clojure.test
+        io.core
         [clojure.java.io :only [input-stream]])
-  (:require io.core)
   (:import (java.nio ByteBuffer)))
 
 (deftest byte-buffer-input-stream
@@ -31,3 +31,14 @@
       (is (= [7 8 9 5 6] (seq buf)))
       (is (= -1 (.read stream))))))
 
+(deftest test-bufseq->bytes
+  (let [inputs (for [input [[1 2 3] [9 8 7]]]
+                 (ByteBuffer/wrap (byte-array (map byte input))))
+        expected [1 2 3 9 8 7]
+        output (bufseq->bytes inputs)]
+    (is (= (class (byte-array 0)) (class output))
+        "should return a byte array")
+    (is (= (count output) (count expected))
+        "should use exactly enough bytes")
+    (is (= (seq output) expected)
+        "should concat the inputs")))

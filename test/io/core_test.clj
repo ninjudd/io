@@ -42,3 +42,13 @@
         "should use exactly enough bytes")
     (is (= (seq output) expected)
         "should concat the inputs")))
+
+
+(deftest test-catbytes
+  (let [contents [[1 2 3] [4 5 6] [7 8 9]]
+        arrays (for [data contents]
+                 (byte-array (map byte data)))
+        merged (apply catbytes arrays)]
+    (is (= (class merged) (class (first arrays))))
+    (is (= (apply concat contents)
+           (seq merged)))))

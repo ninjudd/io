@@ -46,3 +46,13 @@
                 (+ size curr-size)))
             0 bufs)
     dest))
+
+(defn catbytes [& args]
+  (let [out-buf (byte-array (reduce + (map count args)))]
+    (loop [offset 0, args args]
+      (if-let [[^bytes array & more] (seq args)]
+        (let [size (count array)]
+          (System/arraycopy array 0
+                            out-buf offset size)
+          (recur (+ size offset) more))
+        out-buf))))

@@ -1,9 +1,9 @@
-(ns io.core
+(ns flatland.io.core
   (:use [clojure.java.io :only [default-streams-impl input-stream IOFactory]])
   (:import (java.nio ByteBuffer)
            (java.io SequenceInputStream)
            (clojure.lang SeqEnumeration Seqable)
-           (io.core InputStream InputStreamable)))
+           (flatland.io.core InputStream InputStreamable)))
 
 (defn bytebuffer->inputstream [^ByteBuffer buf opts]
   (InputStream.

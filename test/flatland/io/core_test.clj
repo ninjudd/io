@@ -1,6 +1,6 @@
-(ns io.core-test
+(ns flatland.io.core-test
   (:use clojure.test
-        io.core
+        flatland.io.core
         [clojure.java.io :only [input-stream]])
   (:import (java.nio ByteBuffer)))
 

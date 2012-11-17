@@ -1,4 +1,4 @@
-(defproject org.flatland/io "0.2.2-SNAPSHOT"
+(defproject org.flatland/io "0.3.0"
   :description "The innermost moon of Jupiter."
   :url "https://github.com/flatland/io"
   :license  {:name "Eclipse Public License - v 1.0"

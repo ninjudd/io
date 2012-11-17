@@ -1,4 +1,4 @@
-package io.core;
+package flatland.io.core;
 
 public class InputStream extends java.io.InputStream {
     final InputStreamable in;

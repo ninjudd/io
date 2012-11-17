@@ -1,4 +1,4 @@
-package io.core;
+package flatland.io.core;
 
 public class OutputStream extends java.io.OutputStream {
     final OutputStreamable out;

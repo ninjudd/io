@@ -1,9 +1,9 @@
-(ns io.core
+(ns flatland.io.core
   (:use [clojure.java.io :only [default-streams-impl input-stream IOFactory]])
   (:import (java.nio ByteBuffer)
            (java.io SequenceInputStream)
            (clojure.lang SeqEnumeration Seqable)
-           (io.core InputStream InputStreamable)))
+           (flatland.io.core InputStream InputStreamable)))
 
 (defn bytebuffer->inputstream [^ByteBuffer buf opts]
   (InputStream.
@@ -37,4 +37,25 @@
   (assoc default-streams-impl
     :make-input-stream concat-input-streams))
 
+(defn bufseq->bytes [bufs]
+  (let [size (apply + (map #(.remaining ^ByteBuffer %) bufs))
+        dest (byte-array (apply + (map #(.remaining ^ByteBuffer %) bufs)))]
+    (reduce (fn [curr-size ^ByteBuffer b]
+              (let [size (.remaining b)]
+                (.get b dest curr-size size)
+                (+ size curr-size)))
+            0 bufs)
+    dest))
 
+(defn catbytes [& args]
+  (let [out-buf (byte-array (loop [len 0, args (seq args)]
+                              (if-let [[arg & args] args]
+                                (recur (+ len (alength ^bytes arg)) args)
+                                len)))]
+    (loop [offset 0, args args]
+      (if-let [[^bytes array & more] (seq args)]
+        (let [size (alength array)]
+          (System/arraycopy array 0
+                            out-buf offset size)
+          (recur (+ size offset) more))
+        out-buf))))

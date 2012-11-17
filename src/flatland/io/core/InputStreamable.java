@@ -1,4 +1,4 @@
-package io.core;
+package flatland.io.core;
 
 public interface InputStreamable {
     public int read(byte[] b, int off, int len);
